@@ -1,0 +1,27 @@
+{
+  "name": "realtime",
+  "version": "1.0.0",
+  "description": "Project for Turing School",
+  "main": "index.js",
+  "scripts": {
+    "test": "Mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tjkomor/real-time.git"
+  },
+  "keywords": [
+    "JavaScript"
+  ],
+  "author": "Tyler Komoroske",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tjkomor/real-time/issues"
+  },
+  "homepage": "https://github.com/tjkomor/real-time#readme",
+  "dependencies": {
+    "express": "^4.13.4",
+    "lodash": "^4.6.1",
+    "socket.io": "^1.4.5"
+  }
+}
