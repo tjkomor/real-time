@@ -1,8 +1,27 @@
-<h1>{{question}}</h1>
+<div class="container">
+  <div class="well">
+    <div class='responses'>
+      <h1>{{question}}</h1>
+      <br>
+      <h3>Total Votes: <div class="total"><div></h3>
+        <table class="table table-hover">
+          <tr>
+            <th>Voting Response</th>
+            <th>Number of Votes</th>
+          </tr>
+          {{#each responses}}
+          <tr>
+            <td>{{this}}</td>
+            <td class={{@index}}>0</td>
+          </tr>
+          {{/each}}
+        </table>
+      </div>
+      <div class='submitted' style='display: none;'><h3></h3></div>
+    </div>
+  </div>
 
- <div class={{id}} id='choices'>
-   {{#each responses}}
-     <button>{{this}}</button>
-   {{/each}}
-   <div class='thank-you'style='display: none;'><h3>Thank you for voting!</h3></div>
- </div>
+  <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/admin.js"></script>
