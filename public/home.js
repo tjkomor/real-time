@@ -3,6 +3,7 @@ var poll = {};
 var responses = [];
 
 $('#add-poll').on('click', function(){
+  $('#submit-poll').show();
   var polling = $('#poll-question');
   poll["pollingQuestion"] = polling.val().split(/[<>]/).join('');
   $('.poll').append('<h3>'  poll["pollingQuestion"]  '</h3>');
@@ -21,4 +22,13 @@ $('#add-response').on('click', function() {
 $('#submit-poll').on('click', function() {
   poll["responses"] = responses;
   socket.send('createPoll', poll);
+  $('.add-responses').hide();
+  this.style.visibility = "hidden";
+  poll = {};
+});
+
+socket.on('webAddresses', function (addresses) {
+  $('.web-addresses').show();
+  $(".admin").append("Admin View: <a href='" + addresses["admin"] +"'>" + addresses["admin"] + "</a>")
+  $(".voters").append("Voter View: <a href='" + addresses["voters"] +"'>" + addresses["voters"] + "</a>")
 });
