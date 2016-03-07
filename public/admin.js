@@ -12,3 +12,10 @@ socket.on(id, function(voteCount) {
     }
   }
 })
+
+
+$('.close-poll').on('click', function() {
+  this.style.display = "none";
+  $('.poll-closed').show();
+  socket.send("close-poll", {pollId: id});
+});

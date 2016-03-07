@@ -1,27 +1,36 @@
 <div class="container">
   <div class="well">
+    {{#if open}}
+      <h1 class="poll-closed">Pole Has Been Closed</h1>
+    {{else}}
+      <h1 class="poll-closed" style="display:block;">Pole Has Been Closed</h1>
+    {{/if}}
     <div class='responses'>
-      <h1>{{question}}</h1>
+      <h1>Polling Question: {{question}}</h1>
       <br>
-      <h3>Total Votes: <div class="total"><div></h3>
-        <table class="table table-hover">
-          <tr>
-            <th>Voting Response</th>
-            <th>Number of Votes</th>
-          </tr>
-          {{#each responses}}
-          <tr>
-            <td>{{this}}</td>
-            <td class={{@index}}>0</td>
-          </tr>
-          {{/each}}
-        </table>
-      </div>
-      <div class='submitted' style='display: none;'><h3></h3></div>
+      <h3 class="total"></h3>
+      <table class="table table-hover">
+        <tr>
+          <th>Voting Response</th>
+          <th>Number of Votes</th>
+        </tr>
+        {{#each responses}}
+        <tr>
+          <td>{{this}}</td>
+          <td class={{@key}}></td>
+        </tr>
+        {{/each}}
+      </table>
     </div>
+    {{#if open}}
+      <button class="close-poll btn btn-danger">Close Pole</div>
+    {{else}}
+      <button class="close-poll btn btn-danger" style="display:none;">Close Pole</div>
+    {{/if}}
   </div>
+</div>
 
-  <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/admin.js"></script>
+<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/admin.js"></script>

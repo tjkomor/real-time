@@ -1,16 +1,40 @@
 <div class="container">
+  {{#if open}}
+  <h1 class="poll-closed">Pole Has Been Closed</h1>
   <div class="well">
     <div class='responses'>
       <h1>{{question}}</h1>
       <h4>Choose An Option:</h4>
       <ol>
         {{#each responses}}
-        <li><button class={{@key}}>{{this}}</button></li>
+          <li><button class={{@key}}>{{this}}</button></li>
         {{/each}}
       </ol>
     </div>
     <div class='submitted' style='display: none;'><h3></h3></div>
+
+    {{#if shareStats}}
+    <div class="stats">
+      <h2><div class="total"></div></h2>
+      <table class="table table-hover">
+        <tr>
+          <th>Voting Response</th>
+          <th>Number of Votes</th>
+        </tr>
+        {{#each responses}}
+        <tr>
+          <td>{{this}}</td>
+          <td class="stats{{@key}}"></td>
+        </tr>
+        {{/each}}
+      </table>
+    </div>
+    {{/if}}
+
   </div>
+  {{else}}
+    <h1 class="poll-closed" style="display:block;">Pole Has Been Closed</h1>
+  {{/if}}
 </div>
 
 <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
