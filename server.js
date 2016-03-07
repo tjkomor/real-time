@@ -28,6 +28,17 @@ app.get("/", function(request, response){
   response.sendFile(__dirname + '/public/index.html');
 });
 
+app.get('/admin/:id', (request, response) => {
+   var id = request.params.id
+   var question = polls[request.params.id].question;
+   var responses = polls[request.params.id].responses;
+   var responseCount = voteCountByResponse(id);
+
+
+   response.render('admin', {id, question, responses})
+ });
+
+
 io.on('connection', function (socket) {
   socket.on('message', function(channel, message){
     if(channel == "createPoll"){
@@ -71,5 +82,23 @@ function generateAddresses(id){
 }
 }
 }
+
+function voteCount(id) {
+   return lodash.countBy(votes[id], function(response, voter){
+     return response;
+   });
+ }
+
+ function voteCountIndex(id) {
+   var responseCount = voteCountByResponse(id);
+   var responses = polls[id].responses;
+   var responseCountByIndex = {};
+   lodash.forEach(responseCount, function(count, response){
+     responseCountByIndex[responses.indexOf(response)] = count;
+   });
+   return responseCountByIndex;
+ }
+
+
 
 module.exports = server;
