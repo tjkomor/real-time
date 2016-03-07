@@ -16,7 +16,7 @@ const io = socketIo(server);
 
 const generateId = require('./lib/create-id');
 
-var poll = {};
+var polls = {};
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
@@ -37,8 +37,18 @@ io.on('connection', function (socket) {
   });
 });
 
+app.get('/voters/:id', (request, response) => {
+  var id = request.params.id
+  var question = polls[request.params.id].question;
+  var responses = polls[request.params.id].responses;
+
+  response.render('admin', {id, question, responses})
+});
+
+
+
 function createPoll(message, id){
-  poll[id] = message;
+  polls[id] = message;
 }
 
 function generateAddresses(id){

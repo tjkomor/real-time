@@ -5,8 +5,8 @@ var responses = [];
 $('#add-poll').on('click', function(){
   $('#submit-poll').show();
   var polling = $('#poll-question');
-  poll["pollingQuestion"] = polling.val().split(/[<>]/).join('');
-  $('.poll').append('<h3>'  poll["pollingQuestion"]  '</h3>');
+  poll["question"] = polling.val().split(/[<>]/).join('');
+  $('.poll').append('<h3>'  poll["question"]  '</h3>');
   polling.val('')
   $('.add-poll').hide();
   $('.add-responses').show();
