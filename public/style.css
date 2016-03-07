@@ -5,3 +5,21 @@
 .well {
   background-color: lightblue;
 }
+
+.jumbotron {
+  background-color: lightblue;
+}
+
+.poll-closed {
+  color: red;
+  display: none;
+}
+
+#stats-shared-message {
+  color: green;
+  display: none;
+}
+
+.stats {
+  padding-top: 20px;
+}
