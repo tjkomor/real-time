@@ -14,9 +14,9 @@ const server = http.createServer(app)
 const socketIo = require('socket.io');
 const io = socketIo(server);
 
-const allPolls = require('./lib/allPolls');
+const pollDatabase = require('./lib/pollDatabase');
 
-var polls = new allPolls();
+var polls = new pollDatabase();
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
@@ -31,30 +31,34 @@ app.get("/", function(request, response){
 
 app.get('/voters/:id', (request, response) => {
   var pollId = request.params.id;
-  response.render('voter', allPolls.findById(pollId));
+  response.render('voter', polls.findById(pollId));
 });
 
 app.get('/admin/:id', (request, response) => {
   var pollId = request.params.id
-  response.render('admin', allPolls.findById(pollId))
+  response.render('admin', polls.findById(pollId))
 });
 
 
 io.on('connection', function (socket) {
   socket.on('message', function(channel, message){
-    if(channel == "createPoll"){
-      var id = polls.addPoll(message);
-      socket.emit('webAddresses', polls.urls(id));
-    } else if (channel == "voteResponse") {
-      polls.addVote(message.pollId, message.voteId)
-      io.sockets.emit(message.pollId, polls.voteData(message.pollId));
-    } else if (channel == "latestVoteData"){
-      io.sockets.emit(message.pollId, polls.voteData(message.pollId));
-    } else if (channel == "close-poll"){
-      polls.closePoll(message.pollId)
-      io.sockets.emit("close-" + message.pollId, {open: false});
-    }
+    checkChannel(channel, message, socket)
   });
 });
+
+function checkChannel(channel, message, socket) {
+  if(channel === "createPoll"){
+    var id = polls.newPoll(message);
+    socket.emit('webAddresses', polls.urls(id));
+  } else if (channel === "voteResponse") {
+    polls.addVote(message.pollId, message.voteId)
+    io.sockets.emit(message.pollId, polls.getVoteData(message.pollId));
+  } else if (channel === "latestgetVoteData"){
+    io.sockets.emit(message.pollId, polls.getVoteData(message.pollId));
+  } else if (channel === "close-poll"){
+    polls.closePoll(message.pollId)
+    io.sockets.emit("close-" + message.pollId, {open: false});
+  }
+}
 
 module.exports = server;
