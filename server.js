@@ -1,42 +1,43 @@
 const http = require('http');
 const express = require('express');
 const app = express();
-const lodash = require('lodash');
+const _ = require('lodash');
 const exphbs  = require('express-handlebars');
 
 const port = process.env.PORT || 3000;
 
 const server = http.createServer(app)
-.listen(port, function(){
-  console.log('Listening on port ' + port + '.');
-});
+              .listen(port, function(){
+               console.log('Listening on port ' + port + '.');
+              });
 
 const socketIo = require('socket.io');
 const io = socketIo(server);
 
-const generateId = require('./lib/create-id');
+const allPolls = require('./lib/allPolls');
 
-var polls = {};
-var votes = {};
+var polls = new allPolls();
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
+pry = require('pryjs');
+
 app.use(express.static('public'))
 
 app.get("/", function(request, response){
-  response.sendFile(__dirname + '/public/index.html');
+ res.sendFile(__dirname + '/public/index.html');
+});
+
+app.get('/voters/:id', (request, response) => {
+  var pollId = request.params.id;
+  response.render('voter', allPolls.findById(pollId));
 });
 
 app.get('/admin/:id', (request, response) => {
-   var id = request.params.id
-   var question = polls[request.params.id].question;
-   var responses = polls[request.params.id].responses;
-   var responseCount = voteCountByResponse(id);
-
-
-   response.render('admin', {id, question, responses})
- });
+  var pollId = request.params.id
+  response.render('admin', allPolls.findById(pollId))
+});
 
 
 io.on('connection', function (socket) {
@@ -55,50 +56,5 @@ io.on('connection', function (socket) {
     }
   });
 });
-
-
-app.get('/voters/:id', (request, response) => {
-  var id = request.params.id
-  var question = polls[request.params.id].question;
-  var responses = polls[request.params.id].responses;
-
-  response.render('votes', {id, question, responses})
-});
-
-
-
-function createPoll(message, id){
-  polls[id] = message;
-}
-
-function generateAddresses(id){
-  if (port === 3000){
-    return { admin: "http://localhost:3000/admin/" + id,
-    voters: "http://localhost:3000/voters/" + id,
-  }
-} else {
-  return { admin: "https://#/admin/" + id,
-  voters: "https://#/voters/" + id,
-}
-}
-}
-
-function voteCount(id) {
-   return lodash.countBy(votes[id], function(response, voter){
-     return response;
-   });
- }
-
- function voteCountIndex(id) {
-   var responseCount = voteCountByResponse(id);
-   var responses = polls[id].responses;
-   var responseCountByIndex = {};
-   lodash.forEach(responseCount, function(count, response){
-     responseCountByIndex[responses.indexOf(response)] = count;
-   });
-   return responseCountByIndex;
- }
-
-
 
 module.exports = server;

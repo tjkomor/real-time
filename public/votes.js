@@ -1,12 +1,13 @@
 var socket = io();
-var vote = {};
+var parsedUrl = window.location.href.split('/');
+var vote = {id: parsedUrl[parsedUrl.length - 1]};
+console.log(vote);
 
 $('button').on('click', function() {
-  vote["id"] = this.parentNode.parentNode.id;
-  vote["response"] = this.innerHTML;
+  var responseTitle = this.innerHTML;
+  vote["response"] = this.className;
   $('.responses').hide();
   $('.submitted').show();
-  $('h3').append("Your vote for <em>'"  vote["response"]
-  "'</em> has been submitted!");
+  $('h3').append("Your vote <em>'" + responseTitle +  "'</em> has been submitted!");
   socket.send("voteResponse", vote)
 })
