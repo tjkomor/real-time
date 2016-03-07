@@ -8,7 +8,7 @@ socket.on(id, function(getVoteData) {
   var responseCount = $('td:not(class)').length;
   $('.total').text(`Total Votes: ` + getVoteData.total)
   for( var i = 0; i < responseCount; i++) {
-    if (getVoteData.votes[i] !== undefined){
+    if (getVoteData.votes[i] != undefined){
       $('.' + i).text(getVoteData.votes[i]);
     } else {
       $('.' + i).text(0);
