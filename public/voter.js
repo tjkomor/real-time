@@ -18,14 +18,19 @@ $('button').on('click', function() {
 socket.on(id, function(getVoteData) {
   var responseCount = $('td:not(class)').length;
   $('.total').text(`Total Votes: ` + getVoteData.total)
+  checkVoteDataVotes(getVoteData, responseCount);
+});
+
+function checkVoteDataVotes (voteData, responseCount) {
   for( var i = 0; i < responseCount; i++) {
-    if (getVoteData.votes[i] != undefined){
-      $('.stats' + i).text(getVoteData.votes[i]);
+    if (voteData.votes[i]){
+      $('.' + i).text(getVoteData.votes[i]);
     } else {
-      $('.stats' + i).text(0);
+      $('.' + i).text(0);
     }
   }
-});
+}
+
 
 socket.on("close-" + vote.pollId, function(message) {
   if(message.open === false){
